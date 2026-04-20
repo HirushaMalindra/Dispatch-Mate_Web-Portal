@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="banners">
+  <div th:if="${successMsg}" class="alert alert-success">
+    <span class="alert-icon">&#10003;</span>
+    <span th:text="${successMsg}"></span>
+  </div>
+  <div th:if="${errorMsg}" class="alert alert-error">
+    <span class="alert-icon">&#33;</span>
+    <span th:text="${errorMsg}"></span>
+  </div>
+  <div th:if="${infoMsg}" class="alert alert-info">
+    <span class="alert-icon">&#8505;</span>
+    <span th:text="${infoMsg}"></span>
+  </div>
+</div>
+</html>

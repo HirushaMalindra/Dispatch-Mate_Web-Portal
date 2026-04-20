@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head><meta charset="UTF-8"/><title>Token Detail — Admin</title>
+<link rel="stylesheet" th:href="@{/css/style.css}"/></head>
+<body>
+<div class="layout">
+  <div th:replace="~{fragments/navbar-admin :: sidebar(null,'verify')}"></div>
+  <div class="main">
+    <div class="topbar"><span class="topbar-title">Token Verified</span></div>
+    <div class="page-body">
+      <div th:replace="~{fragments/alerts :: banners}"></div>
+      <div class="page-header">
+        <h1>&#10003; Token Found</h1>
+        <p>Review student details and mark books as collected</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;"
+           class="detail-grid">
+        <!-- Student card -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">Student Details</span></div>
+          <table style="font-size:.9rem;">
+            <tr><td style="color:var(--gray-500);padding:7px 0;width:120px;">Name</td>
+                <td><strong th:text="${token.student.fullName}"></strong></td></tr>
+            <tr><td style="color:var(--gray-500);padding:7px 0;">Reg. Number</td>
+                <td th:text="${token.student.regNumber}"></td></tr>
+            <tr><td style="color:var(--gray-500);padding:7px 0;">Email</td>
+                <td th:text="${token.student.email}"></td></tr>
+            <tr><td style="color:var(--gray-500);padding:7px 0;">Token</td>
+                <td><code th:text="${token.tokenString}"></code></td></tr>
+            <tr th:if="${token.timeSlot != null}">
+              <td style="color:var(--gray-500);padding:7px 0;">Slot</td>
+              <td th:text="${token.timeSlot.slotDate + '  ' + token.timeSlot.startTime + ' – ' + token.timeSlot.endTime}"></td>
+            </tr>
+            <tr><td style="color:var(--gray-500);padding:7px 0;">Status</td>
+                <td>
+                  <span th:if="${!token.used}" class="badge badge-green">Active — not yet used</span>
+                  <span th:if="${token.used}"  class="badge badge-gray">Already Used</span>
+                </td></tr>
+          </table>
+        </div>
+
+        <!-- Mark entire token used -->
+        <div class="card" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:16px;">
+          <div style="font-size:2.5rem;">&#128218;</div>
+          <p style="font-size:.9rem;color:var(--gray-600);">Once all books are handed over, close this token.</p>
+          <form th:if="${!token.used}"
+                th:action="@{/admin/tokens/{id}/mark-used(id=${token.tokenId})}" method="post">
+            <button type="submit" class="btn btn-primary"
+                    data-confirm="Mark entire token as used?">
+              &#10003; Close Token (All Done)
+            </button>
+          </form>
+          <span th:if="${token.used}" class="badge badge-gray" style="font-size:.9rem;">Token already closed</span>
+        </div>
+      </div>
+
+      <!-- Books to hand out -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Books to Hand Over</span>
+          <span class="text-muted" th:text="${enrollments.size()} + ' modules'"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Module Code</th><th>Book Title</th><th>Collected?</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+              <tr th:each="e : ${enrollments}">
+                <td><code th:text="${e.book.moduleCode}"></code></td>
+                <td style="font-weight:500;" th:text="${e.book.title}"></td>
+                <td>
+                  <span th:if="${e.collected}"  class="badge badge-blue">&#10003; Collected</span>
+                  <span th:if="${!e.collected}" class="badge badge-amber">Hand over now</span>
+                </td>
+                <td>
+                  <form th:if="${!e.collected}"
+                        th:action="@{/admin/enrollments/{id}/mark-collected(id=${e.enrollmentId})}"
+                        method="post" style="display:inline;">
+                    <input type="hidden" name="tokenString" th:value="${token.tokenString}"/>
+                    <button type="submit" class="btn btn-success btn-sm">&#10003; Mark Collected</button>
+                  </form>
+                  <span th:if="${e.collected}" class="text-muted">Done</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <a href="/admin/tokens/verify" class="btn btn-outline">&#8592; Verify Another Token</a>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

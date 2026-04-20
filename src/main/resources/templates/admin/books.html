@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head><meta charset="UTF-8"/><title>Books &amp; Stock — Admin</title>
+<link rel="stylesheet" th:href="@{/css/style.css}"/></head>
+<body>
+<div class="layout">
+  <div th:replace="~{fragments/navbar-admin :: sidebar(null,'books')}"></div>
+  <div class="main">
+    <div class="topbar"><span class="topbar-title">Books &amp; Stock Management</span></div>
+    <div class="page-body">
+      <div th:replace="~{fragments/alerts :: banners}"></div>
+      <div class="page-header"><h1>Book Inventory</h1><p>Update stock levels and view availability</p></div>
+      <div class="search-bar">
+        <form method="get" action="/admin/books" style="display:flex;gap:10px;">
+          <input type="text" name="keyword" class="form-control search-input"
+                 placeholder="Search by title..." th:value="${keyword}" style="max-width:340px;"/>
+          <button type="submit" class="btn btn-primary">Search</button>
+          <a href="/admin/books" class="btn btn-outline">Clear</a>
+        </form>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Module Code</th><th>Title</th><th>Stock</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr th:each="b : ${books}">
+                <td><code th:text="${b.moduleCode}"></code></td>
+                <td style="font-weight:500;" th:text="${b.title}"></td>
+                <td><strong th:text="${b.currentStock}"></strong></td>
+                <td>
+                  <span th:if="${b.currentStock > 0}" class="badge badge-green">Available</span>
+                  <span th:if="${b.currentStock == 0}" class="badge badge-red">Out of Stock</span>
+                </td>
+                <td>
+                  <a th:href="@{/admin/books/{id}/edit(id=${b.bookId})}"
+                     class="btn btn-outline btn-sm">&#9998; Update Stock</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

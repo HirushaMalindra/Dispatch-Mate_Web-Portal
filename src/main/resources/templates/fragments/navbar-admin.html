@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar(staff, page)">
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="app-name">&#127979; Dispatch Mate</div>
+    <div class="app-sub">Admin Portal</div>
+  </div>
+  <div class="sidebar-user" th:if="${staff != null}">
+    <div class="user-name" th:text="${staff.name}">Admin Name</div>
+    <div class="user-role" th:text="${staff.role}">Role</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="/admin/dashboard"><span class="nav-icon">&#128200;</span> Dashboard</a>
+    <a href="/admin/books"><span class="nav-icon">&#128218;</span> Books &amp; Stock</a>
+    <a href="/admin/tokens"><span class="nav-icon">&#127760;</span> All Tokens</a>
+    <a href="/admin/tokens/verify"><span class="nav-icon">&#10003;</span> Scan Token</a>
+    <div class="nav-sep"></div>
+    <a href="/admin/enrollments"><span class="nav-icon">&#128101;</span> Enrollments</a>
+    <a href="/admin/alerts"><span class="nav-icon">&#128276;</span> Restock Alerts</a>
+    <a href="/admin/slots"><span class="nav-icon">&#128197;</span> Time Slots</a>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="/logout"><span>&#8594;</span> Logout</a>
+  </div>
+</aside>
+</html>

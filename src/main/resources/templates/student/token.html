@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head><meta charset="UTF-8"/><title>My Collection Token</title>
+<link rel="stylesheet" th:href="@{/css/style.css}"/></head>
+<body>
+<div class="layout">
+  <div th:replace="~{fragments/navbar-student :: sidebar(${student},'token')}"></div>
+  <div class="main">
+    <div class="topbar"><span class="topbar-title">My Collection Token</span></div>
+    <div class="page-body">
+      <div th:replace="~{fragments/alerts :: banners}"></div>
+      <div class="page-header">
+        <h1>Collection Token</h1>
+        <p>Present this token at the library desk to collect your books</p>
+      </div>
+
+      <!-- No token -->
+      <div th:if="${token == null}" class="card" style="text-align:center;padding:48px;">
+        <div style="font-size:3rem;margin-bottom:16px;">&#127760;</div>
+        <p style="font-size:1.05rem;color:var(--gray-600);margin-bottom:24px;">
+          You have not generated a collection token yet.
+        </p>
+        <a href="/student/token/new" class="btn btn-primary">
+          &#43; Generate Token &amp; Pick Time Slot
+        </a>
+      </div>
+
+      <!-- Token card -->
+      <div th:if="${token != null}">
+        <div class="token-card">
+          <div class="token-card-header">
+            <div class="token-card-logo">&#127979;</div>
+            <div class="token-card-title">OUSL Collection Token</div>
+            <div class="token-card-sub">Open University of Sri Lanka — Library</div>
+          </div>
+          <div class="token-card-body">
+            <div class="token-detail-row">
+              <span class="lbl">Student Name</span>
+              <span class="val" th:text="${student.fullName}"></span>
+            </div>
+            <div class="token-detail-row">
+              <span class="lbl">Reg. Number</span>
+              <span class="val" th:text="${student.regNumber}"></span>
+            </div>
+            <div class="token-detail-row" th:if="${token.timeSlot != null}">
+              <span class="lbl">Collection Date</span>
+              <span class="val" th:text="${token.timeSlot.slotDate}"></span>
+            </div>
+            <div class="token-detail-row" th:if="${token.timeSlot != null}">
+              <span class="lbl">Time Slot</span>
+              <span class="val"
+                th:text="${token.timeSlot.startTime + ' – ' + token.timeSlot.endTime}"></span>
+            </div>
+            <div class="token-detail-row">
+              <span class="lbl">Status</span>
+              <span th:if="${!token.used}" class="badge badge-green">Active</span>
+              <span th:if="${token.used}"  class="badge badge-gray">Used / Collected</span>
+            </div>
+            <!-- QR Placeholder -->
+            <div class="token-qr">&#11092;</div>
+            <!-- Token code -->
+            <div class="token-code-box" th:text="${token.tokenString}"></div>
+          </div>
+          <div class="token-card-footer">
+            Show this code or QR at the library counter to collect your course materials.
+          </div>
+        </div>
+        <div class="text-center mt-4 no-print">
+          <button onclick="window.print()" class="btn btn-outline">
+            &#128438; Print Token Card
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

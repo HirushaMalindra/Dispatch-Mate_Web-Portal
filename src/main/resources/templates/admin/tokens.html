@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head><meta charset="UTF-8"/><title>Tokens — Admin</title>
+<link rel="stylesheet" th:href="@{/css/style.css}"/></head>
+<body>
+<div class="layout">
+  <div th:replace="~{fragments/navbar-admin :: sidebar(null,'tokens')}"></div>
+  <div class="main">
+    <div class="topbar"><span class="topbar-title">All Collection Tokens</span></div>
+    <div class="page-body">
+      <div th:replace="~{fragments/alerts :: banners}"></div>
+      <div class="page-header">
+        <h1>Collection Tokens</h1>
+        <p>All generated student tokens and their status</p>
+      </div>
+      <div style="margin-bottom:16px;">
+        <a href="/admin/tokens/verify" class="btn btn-primary">&#10003; Scan / Verify a Token</a>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Token Code</th><th>Student</th><th>Reg No.</th><th>Date</th><th>Time</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+              <tr th:each="t : ${tokens}">
+                <td><code th:text="${t.tokenString}"></code></td>
+                <td th:text="${t.student.fullName}"></td>
+                <td th:text="${t.student.regNumber}"></td>
+                <td th:text="${t.timeSlot != null} ? ${t.timeSlot.slotDate} : '—'"></td>
+                <td th:text="${t.timeSlot != null} ? ${t.timeSlot.startTime + ' – ' + t.timeSlot.endTime} : '—'"></td>
+                <td>
+                  <span th:if="${!t.used}" class="badge badge-green">Active</span>
+                  <span th:if="${t.used}"  class="badge badge-gray">Used</span>
+                </td>
+                <td>
+                  <form th:if="${!t.used}"
+                        th:action="@{/admin/tokens/{id}/mark-used(id=${t.tokenId})}"
+                        method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-success btn-sm"
+                            data-confirm="Mark this token as used?">Mark Used</button>
+                  </form>
+                </td>
+              </tr>
+              <tr th:if="${tokens.empty}">
+                <td colspan="7" class="text-muted text-center" style="padding:24px;">No tokens yet</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>
