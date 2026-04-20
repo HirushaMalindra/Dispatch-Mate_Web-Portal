@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head><meta charset="UTF-8"/><title>Time Slots — Admin</title>
+<link rel="stylesheet" th:href="@{/css/style.css}"/></head>
+<body>
+<div class="layout">
+  <div th:replace="~{fragments/navbar-admin :: sidebar(null,'slots')}"></div>
+  <div class="main">
+    <div class="topbar"><span class="topbar-title">Collection Time Slots</span></div>
+    <div class="page-body">
+      <div class="page-header">
+        <h1>Time Slots</h1>
+        <p>Library collection windows and booking capacity</p>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Start</th><th>End</th><th>Capacity</th><th>Booked</th><th>Remaining</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr th:each="s : ${slots}">
+                <td><strong th:text="${s.slotDate}"></strong></td>
+                <td th:text="${s.startTime}"></td>
+                <td th:text="${s.endTime}"></td>
+                <td th:text="${s.maxCapacity}"></td>
+                <td th:text="${s.currentBookings}"></td>
+                <td th:text="${s.remainingSlots}"></td>
+                <td>
+                  <span th:if="${s.hasAvailableSpace()}"  class="badge badge-green">Open</span>
+                  <span th:if="${!s.hasAvailableSpace()}" class="badge badge-red">Full</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

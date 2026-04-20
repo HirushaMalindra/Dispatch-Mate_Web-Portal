@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head><meta charset="UTF-8"/><title>Enrollments — Admin</title>
+<link rel="stylesheet" th:href="@{/css/style.css}"/></head>
+<body>
+<div class="layout">
+  <div th:replace="~{fragments/navbar-admin :: sidebar(null,'enrollments')}"></div>
+  <div class="main">
+    <div class="topbar"><span class="topbar-title">Student Enrollments</span></div>
+    <div class="page-body">
+      <div th:replace="~{fragments/alerts :: banners}"></div>
+      <div class="page-header">
+        <h1>Enrollments &amp; Collection Status</h1>
+        <p>All student-book pairings and collection progress</p>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Student</th><th>Reg No.</th><th>Module</th><th>Book Title</th><th>Collected?</th></tr>
+            </thead>
+            <tbody>
+              <tr th:each="e : ${enrollments}">
+                <td th:text="${e.student.fullName}"></td>
+                <td th:text="${e.student.regNumber}"></td>
+                <td><code th:text="${e.book.moduleCode}"></code></td>
+                <td th:text="${e.book.title}"></td>
+                <td>
+                  <span th:if="${e.collected}"  class="badge badge-blue">&#10003; Collected</span>
+                  <span th:if="${!e.collected}" class="badge badge-gray">Pending</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

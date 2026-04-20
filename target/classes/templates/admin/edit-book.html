@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head><meta charset="UTF-8"/><title>Update Stock — Admin</title>
+<link rel="stylesheet" th:href="@{/css/style.css}"/></head>
+<body>
+<div class="layout">
+  <div th:replace="~{fragments/navbar-admin :: sidebar(null,'books')}"></div>
+  <div class="main">
+    <div class="topbar"><span class="topbar-title">Update Book Stock</span></div>
+    <div class="page-body">
+      <div class="page-header">
+        <h1>Update Stock</h1>
+        <p th:text="${book.title}"></p>
+      </div>
+      <div class="card" style="max-width:480px;">
+        <div style="background:var(--gray-50);border-radius:8px;padding:14px 16px;margin-bottom:20px;">
+          <div style="display:flex;gap:16px;font-size:.88rem;">
+            <span><span style="color:var(--gray-500);">Module:</span> <strong th:text="${book.moduleCode}"></strong></span>
+            <span><span style="color:var(--gray-500);">Current Stock:</span> <strong th:text="${book.currentStock}"></strong></span>
+          </div>
+        </div>
+        <form th:action="@{/admin/books/{id}/update-stock(id=${book.bookId})}"
+              th:object="${updateStockRequest}" method="post">
+          <div class="form-group">
+            <label class="form-label">New Total Stock Quantity</label>
+            <input type="number" class="form-control" th:field="*{newStock}" min="0"
+                   placeholder="Enter new total stock count"/>
+            <div class="form-hint">Enter the total number of copies (including those already issued).</div>
+            <div class="form-error" th:if="${#fields.hasErrors('newStock')}"
+                 th:errors="*{newStock}"></div>
+          </div>
+          <div class="flex gap-3">
+            <button type="submit" class="btn btn-primary">&#10003; Save Changes</button>
+            <a href="/admin/books" class="btn btn-outline">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

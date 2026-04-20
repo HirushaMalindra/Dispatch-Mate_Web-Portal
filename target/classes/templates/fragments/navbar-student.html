@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar(student, page)">
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="app-name">&#127979; Dispatch Mate</div>
+    <div class="app-sub">Open University of Sri Lanka</div>
+  </div>
+  <div class="sidebar-user" th:if="${student != null}">
+    <div class="user-name" th:text="${student.fullName}">Student Name</div>
+    <div class="user-role" th:text="${student.regNumber}">Reg No</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="/student/dashboard"><span class="nav-icon">&#128200;</span> Dashboard</a>
+    <a href="/student/books"><span class="nav-icon">&#128218;</span> Book Catalogue</a>
+    <a href="/student/token"><span class="nav-icon">&#127760;</span> My Token</a>
+    <a href="/student/token/new"><span class="nav-icon">&#43;</span> Generate Token</a>
+    <div class="nav-sep"></div>
+    <a href="/student/alerts"><span class="nav-icon">&#128276;</span> Restock Alerts</a>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="/logout"><span>&#8594;</span> Logout</a>
+  </div>
+</aside>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head><meta charset="UTF-8"/><title>Error — Dispatch Mate</title>
+<link rel="stylesheet" th:href="@{/css/style.css}"/></head>
+<body style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f4f8;">
+  <div class="card" style="max-width:420px;text-align:center;padding:48px 36px;">
+    <div style="font-size:3rem;margin-bottom:16px;">&#9888;&#65039;</div>
+    <h2 style="margin-bottom:10px;" th:text="${errorTitle}">Error</h2>
+    <p style="color:var(--gray-500);margin-bottom:28px;" th:text="${errorMessage}"></p>
+    <a href="javascript:history.back()" class="btn btn-outline">&#8592; Go Back</a>
+  </div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

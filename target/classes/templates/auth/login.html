@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Login — OUSL Dispatch Mate</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="login-page">
+  <div class="login-wrap">
+
+    <div class="login-header">
+      <div class="logo">&#127979;</div>
+      <h1>OUSL Dispatch Mate</h1>
+      <p>Course Material Collection System</p>
+    </div>
+
+    <div class="login-card">
+      <!-- Flash messages from redirects -->
+      <div style="padding:16px 28px 0" th:if="${successMsg != null or errorMsg != null}">
+        <div th:replace="~{fragments/alerts :: banners}"></div>
+      </div>
+
+      <div class="login-tabs">
+        <button class="login-tab" id="tab-student"
+                th:classappend="${activeTab == 'student'} ? ' active'"
+                onclick="switchTab('student')">&#127891; Student</button>
+        <button class="login-tab" id="tab-admin"
+                th:classappend="${activeTab == 'admin'} ? ' active'"
+                onclick="switchTab('admin')">&#128274; Admin / Staff</button>
+      </div>
+
+      <!-- Student login -->
+      <div class="login-panel" id="panel-student"
+           th:classappend="${activeTab != 'student'} ? ' hidden'">
+        <form th:action="@{/login/student}" th:object="${studentLogin}" method="post">
+          <div class="form-group">
+            <label class="form-label">Registration Number</label>
+            <input type="text" class="form-control" th:field="*{regNumber}"
+                   placeholder="e.g. 526774619" autofocus/>
+            <div class="form-error" th:if="${#fields.hasErrors('regNumber')}"
+                 th:errors="*{regNumber}"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" th:field="*{password}"
+                   placeholder="Enter your password"/>
+            <div class="form-error" th:if="${#fields.hasErrors('password')}"
+                 th:errors="*{password}"></div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-login">Login as Student</button>
+        </form>
+      </div>
+
+      <!-- Admin login -->
+      <div class="login-panel" id="panel-admin"
+           th:classappend="${activeTab != 'admin'} ? ' hidden'">
+        <form th:action="@{/login/admin}" th:object="${adminLogin}" method="post">
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control" th:field="*{email}"
+                   placeholder="e.g. admin@ousl.lk"/>
+            <div class="form-error" th:if="${#fields.hasErrors('email')}"
+                 th:errors="*{email}"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" th:field="*{password}"
+                   placeholder="Enter your password"/>
+            <div class="form-error" th:if="${#fields.hasErrors('password')}"
+                 th:errors="*{password}"></div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-login">Login as Admin / Staff</button>
+        </form>
+      </div>
+    </div>
+
+    <p style="text-align:center;color:rgba(255,255,255,.55);font-size:.78rem;margin-top:18px;">
+      OUSL Dispatch Mate &copy; 2026 — Open University of Sri Lanka
+    </p>
+  </div>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

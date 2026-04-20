@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head><meta charset="UTF-8"/><title>Select Time Slot</title>
+<link rel="stylesheet" th:href="@{/css/style.css}"/></head>
+<body>
+<div class="layout">
+  <div th:replace="~{fragments/navbar-student :: sidebar(null,'token')}"></div>
+  <div class="main">
+    <div class="topbar"><span class="topbar-title">Generate Collection Token</span></div>
+    <div class="page-body">
+      <div th:replace="~{fragments/alerts :: banners}"></div>
+      <div class="page-header">
+        <h1>Select a Time Slot</h1>
+        <p>Choose when you will come to the library to collect your books</p>
+      </div>
+
+      <div th:if="${slots.empty}" class="alert alert-error">
+        <span class="alert-icon">&#33;</span>
+        No time slots available right now. Please contact the library.
+      </div>
+
+      <div th:if="${!slots.empty}" class="card" style="max-width:560px;">
+        <form th:action="@{/student/token/generate}" th:object="${tokenRequest}" method="post">
+          <p style="color:var(--gray-500);font-size:.88rem;margin-bottom:16px;">
+            Select one slot below. Once you generate a token you cannot change it.
+          </p>
+
+          <div th:each="slot : ${slots}" class="slot-option">
+            <input type="radio" th:field="*{slotId}" th:value="${slot.slotId}"/>
+            <div style="flex:1;">
+              <div class="slot-time"
+                   th:text="${slot.startTime + ' – ' + slot.endTime}"></div>
+              <div class="slot-date" th:text="${slot.slotDate}"></div>
+            </div>
+            <div class="slot-seats">
+              <span class="badge badge-blue"
+                    th:text="${slot.remainingSlots} + ' seats left'"></span>
+            </div>
+          </div>
+
+          <div class="form-error" th:if="${#fields.hasErrors('slotId')}"
+               th:errors="*{slotId}"></div>
+
+          <div class="flex gap-3 mt-4">
+            <button type="submit" class="btn btn-primary">
+              &#127760; Confirm &amp; Generate Token
+            </button>
+            <a href="/student/dashboard" class="btn btn-outline">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

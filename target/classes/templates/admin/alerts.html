@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head><meta charset="UTF-8"/><title>Restock Alerts — Admin</title>
+<link rel="stylesheet" th:href="@{/css/style.css}"/></head>
+<body>
+<div class="layout">
+  <div th:replace="~{fragments/navbar-admin :: sidebar(null,'alerts')}"></div>
+  <div class="main">
+    <div class="topbar"><span class="topbar-title">Restock Alerts</span></div>
+    <div class="page-body">
+      <div th:replace="~{fragments/alerts :: banners}"></div>
+      <div class="page-header">
+        <h1>Restock Alert Subscribers</h1>
+        <p>Students waiting to be notified when books come back in stock</p>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Student</th><th>Reg No.</th><th>Book</th><th>Module</th><th>Subscribed</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+              <tr th:each="a : ${alerts}">
+                <td th:text="${a.student.fullName}"></td>
+                <td th:text="${a.student.regNumber}"></td>
+                <td th:text="${a.book.title}"></td>
+                <td><code th:text="${a.book.moduleCode}"></code></td>
+                <td th:text="${#temporals.format(a.createdAt,'dd MMM yyyy')}"></td>
+                <td>
+                  <span th:if="${a.alertStatus.name() == 'Pending'}"  class="badge badge-amber">Pending</span>
+                  <span th:if="${a.alertStatus.name() == 'Notified'}" class="badge badge-green">Notified</span>
+                </td>
+                <td>
+                  <form th:if="${a.alertStatus.name() == 'Pending'}"
+                        th:action="@{/admin/alerts/{id}/mark-notified(id=${a.alertId})}" method="post">
+                    <button type="submit" class="btn btn-success btn-sm">Mark Notified</button>
+                  </form>
+                </td>
+              </tr>
+              <tr th:if="${alerts.empty}">
+                <td colspan="7" class="text-muted text-center" style="padding:24px;">No alert subscriptions</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>
