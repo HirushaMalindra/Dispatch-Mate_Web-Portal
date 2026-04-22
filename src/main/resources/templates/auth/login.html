@@ -38,7 +38,7 @@
           <div class="form-group">
             <label class="form-label">Registration Number</label>
             <input type="text" class="form-control" th:field="*{regNumber}"
-                   placeholder="e.g. 526774619" autofocus/>
+                   placeholder= " " autofocus/>
             <div class="form-error" th:if="${#fields.hasErrors('regNumber')}"
                  th:errors="*{regNumber}"></div>
           </div>
